@@ -1,6 +1,5 @@
 DATA_DIR = /home/hkheired/data
 COMPOSE = docker compose -f srcs/docker-compose.yml
-SECRETS_DIR = secrets
 
 all: build up
 
@@ -23,6 +22,8 @@ clean: down
 fclean: clean
 	@sudo rm -rf $(DATA_DIR)/wordpress
 	@sudo rm -rf $(DATA_DIR)/mariadb
+	@mkdir -p $(DATA_DIR)/wordpress
+	@mkdir -p $(DATA_DIR)/mariadb
 	
 re: fclean all
 

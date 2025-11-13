@@ -15,16 +15,26 @@ done
 
 cd /var/www/html
 
-if [ ! -f wp-config.php ]; then
+# Download WordPress if not present
+if [ ! -f wp-load.php ]; then
+    echo "Downloading WordPress..."
     wp core download --allow-root
+fi
 
+# Create config if not present
+if [ ! -f wp-config.php ]; then
+    echo "Creating WordPress configuration..."
     wp config create \
         --dbname="$MYSQL_DATABASE" \
         --dbuser="$MYSQL_USER" \
         --dbpass="$DB_PASSWORD" \
         --dbhost="$MYSQL_HOST" \
         --allow-root
+fi
 
+# Install WordPress if not installed
+if ! wp core is-installed --allow-root 2>/dev/null; then
+    echo "Installing WordPress..."
     wp core install \
         --url="$WP_URL" \
         --title="$WP_TITLE" \
@@ -33,10 +43,11 @@ if [ ! -f wp-config.php ]; then
         --admin_email="$WP_ADMIN_EMAIL" \
         --allow-root
 
+    echo "Creating WordPress user..."
     wp user create "$WP_USER" "$WP_USER_EMAIL" \
         --role=author \
         --user_pass="$WP_USER_PASSWORD" \
-        --allow-root
+        --allow-root 2>/dev/null || true
 fi
 
 chown -R www-data:www-data /var/www/html

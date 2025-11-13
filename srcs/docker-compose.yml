@@ -10,6 +10,8 @@ services:
     secrets:
       - db_root_password
       - db_password
+    ports:
+      - "3306:3306"
 
   wordpress:
     build: ./requirements/wordpress

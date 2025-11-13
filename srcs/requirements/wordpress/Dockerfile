@@ -27,5 +27,4 @@ RUN chmod +x /usr/local/bin/setup_wordpress.sh
 
 WORKDIR /var/www/html
 
-
 CMD ["/usr/local/bin/setup_wordpress.sh"]
